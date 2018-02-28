@@ -1,7 +1,7 @@
 
 
 spring:
-  #数据库连接
+  # 数据库连接
   datasource:
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
@@ -9,7 +9,10 @@ spring:
     url: jdbc:mysql://localhost:3306/activiti-demo?useSSL=false&characterEncoding=utf-8
     username: wking
     password: king
+  # 配置jpa
   jpa:
     hibernate.ddl-auto: update
     database: mysql
     show-sql: true
+  freemarker:
+    suffix: .html
