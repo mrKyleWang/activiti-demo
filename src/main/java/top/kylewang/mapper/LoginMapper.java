@@ -1,6 +1,6 @@
-package mapper;
+package top.kylewang.mapper;
 
-import po.User;
+import top.kylewang.po.User;
 
 
 

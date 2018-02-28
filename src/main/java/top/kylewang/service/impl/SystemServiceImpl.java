@@ -1,10 +1,10 @@
-package service.impl;
+package top.kylewang.service.impl;
 
 import java.util.List;
 
-import mapper.PermissionMapper;
-import mapper.RoleMapper;
-import mapper.UserMapper;
+import top.kylewang.mapper.PermissionMapper;
+import top.kylewang.mapper.RoleMapper;
+import top.kylewang.mapper.UserMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +12,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import po.Permission;
-import po.Role;
-import po.Role_permission;
-import po.User;
-import po.User_role;
-import service.SystemService;
+import top.kylewang.po.Permission;
+import top.kylewang.po.Role;
+import top.kylewang.po.Role_permission;
+import top.kylewang.po.User;
+import top.kylewang.po.User_role;
+import top.kylewang.service.SystemService;
 
 import com.github.pagehelper.PageHelper;
 @Service

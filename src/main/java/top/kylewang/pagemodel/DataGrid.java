@@ -1,4 +1,4 @@
-package pagemodel;
+package top.kylewang.pagemodel;
 
 import java.util.List;
 

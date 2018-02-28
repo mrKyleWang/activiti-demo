@@ -1,8 +1,8 @@
-package pagemodel;
+package top.kylewang.pagemodel;
 
 
-import po.LeaveApply;
-import po.PurchaseApply;
+import top.kylewang.po.LeaveApply;
+import top.kylewang.po.PurchaseApply;
 
 public class HistoryProcess {
 	String processDefinitionId;
@@ -33,6 +33,6 @@ public class HistoryProcess {
 	public void setPurchaseapply(PurchaseApply purchaseapply) {
 		this.purchaseapply = purchaseapply;
 	}
-	
-	
+
+
 }

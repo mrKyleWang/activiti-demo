@@ -1,4 +1,4 @@
-package controller;
+package top.kylewang.controller;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,19 +40,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import pagemodel.DataGrid;
-import pagemodel.HistoryProcess;
-import pagemodel.LeaveTask;
-import pagemodel.Process;
-import pagemodel.RunningProcess;
-import po.LeaveApply;
-import po.Permission;
-import po.Role;
-import po.Role_permission;
-import po.User;
-import po.User_role;
-import service.LeaveService;
-import service.SystemService;
+import top.kylewang.pagemodel.DataGrid;
+import top.kylewang.pagemodel.HistoryProcess;
+import top.kylewang.pagemodel.LeaveTask;
+import top.kylewang.pagemodel.Process;
+import top.kylewang.pagemodel.RunningProcess;
+import top.kylewang.po.LeaveApply;
+import top.kylewang.po.Permission;
+import top.kylewang.po.Role;
+import top.kylewang.po.Role_permission;
+import top.kylewang.po.User;
+import top.kylewang.po.User_role;
+import top.kylewang.service.LeaveService;
+import top.kylewang.service.SystemService;
 
 import com.alibaba.fastjson.JSON;
 
@@ -519,7 +519,7 @@ public class ActivitiController {
 	                            .getDeployedProcessDefinition(process.getProcessDefinitionId()),  
 	                    historicActivityInstances); 
 		
-		InputStream in=gen.generateDiagram(bpmnmodel, "png", activeActivityIds,highLightedFlows,"宋体","宋体",null,1.0);
+		InputStream in=gen.generateDiagram(bpmnmodel, "png", activeActivityIds,highLightedFlows,"宋体","宋体","宋体",null,1.0);
 	    //InputStream in=gen.generateDiagram(bpmnmodel, "png", activeActivityIds);
 	    ServletOutputStream output = response.getOutputStream();
 		IOUtils.copy(in, output);

@@ -1,4 +1,4 @@
-package po;
+package top.kylewang.po;
 
 import java.io.Serializable;
 

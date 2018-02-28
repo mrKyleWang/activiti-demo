@@ -1,7 +1,7 @@
-package pagemodel;
+package top.kylewang.pagemodel;
 
 import java.util.List;
-import po.City;
+import top.kylewang.po.City;
 
 public class CityGrid {
 	private int current;//当前页面号

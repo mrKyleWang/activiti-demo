@@ -1,11 +1,11 @@
-package mapper;
+package top.kylewang.mapper;
 
 import java.util.List;
 
-import po.Permission;
-import po.Role;
-import po.Role_permission;
-import po.User_role;
+import top.kylewang.po.Permission;
+import top.kylewang.po.Role;
+import top.kylewang.po.Role_permission;
+import top.kylewang.po.User_role;
 
 
 public interface RoleMapper {

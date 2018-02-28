@@ -1,4 +1,4 @@
-package web;
+package top.kylewang.web;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;

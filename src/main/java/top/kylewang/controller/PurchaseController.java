@@ -1,14 +1,6 @@
-package controller;
+package top.kylewang.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.alibaba.fastjson.JSON;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -21,27 +13,21 @@ import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import top.kylewang.pagemodel.*;
+import top.kylewang.po.PurchaseApply;
+import top.kylewang.po.Role;
+import top.kylewang.po.User;
+import top.kylewang.po.User_role;
+import top.kylewang.service.PurchaseService;
+import top.kylewang.service.SystemService;
 
-import pagemodel.DataGrid;
-import pagemodel.HistoryProcess;
-import pagemodel.LeaveTask;
-import pagemodel.MSG;
-import pagemodel.PurchaseTask;
-import pagemodel.RunningProcess;
-import po.LeaveApply;
-import po.PurchaseApply;
-import po.Role;
-import po.User;
-import po.User_role;
-import service.PurchaseService;
-import service.SystemService;
-
-import com.alibaba.fastjson.JSON;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Controller
 public class PurchaseController {
@@ -116,7 +102,7 @@ public class PurchaseController {
 	//我发起的采购流程
 	@RequestMapping("mypurchaseprocess")
 	@ResponseBody
-	public DataGrid<RunningProcess> mypurchaseprocess(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
+	public DataGrid<RunningProcess> mypurchaseprocess(HttpSession session, @RequestParam("current") int current, @RequestParam("rowCount") int rowCount){
 		int firstrow=(current-1)*rowCount;
 		String userid=(String) session.getAttribute("username");
 		ProcessInstanceQuery query = runservice.createProcessInstanceQuery();
@@ -159,7 +145,7 @@ public class PurchaseController {
 	
 	@RequestMapping("/puchasemanagertasklist")
 	@ResponseBody
-	DataGrid<PurchaseTask> puchasemanagertasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
+	DataGrid<PurchaseTask> puchasemanagertasklist(HttpSession session, @RequestParam("current") int current, @RequestParam("rowCount") int rowCount){
 		DataGrid<PurchaseTask> grid=new DataGrid<PurchaseTask>();
 		grid.setRowCount(rowCount);
 		grid.setCurrent(current);
@@ -212,7 +198,7 @@ public class PurchaseController {
 	
 	@RequestMapping("task/purchasemanagercomplete/{taskid}")
 	@ResponseBody
-	public MSG purchasemanagercomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
+	public MSG purchasemanagercomplete(HttpSession session, @PathVariable("taskid") String taskid, HttpServletRequest req){
 		String purchaseauditi=req.getParameter("purchaseauditi");
 		String userid=(String) session.getAttribute("username");
 		Map<String,Object> variables=new HashMap<String,Object>();
@@ -282,7 +268,7 @@ public class PurchaseController {
 	
 	@RequestMapping("getfinishpurchaseprocess")
 	@ResponseBody
-	public DataGrid<HistoryProcess> getHistory(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
+	public DataGrid<HistoryProcess> getHistory(HttpSession session, @RequestParam("current") int current, @RequestParam("rowCount") int rowCount){
 		String userid=(String) session.getAttribute("username");
 		HistoricProcessInstanceQuery process = histiryservice.createHistoricProcessInstanceQuery().processDefinitionKey("purchase").startedBy(userid).finished();
 		int total= (int) process.count();

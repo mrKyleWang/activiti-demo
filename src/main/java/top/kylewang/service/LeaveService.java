@@ -1,20 +1,19 @@
-package service;
-
-import java.util.List;
-import java.util.Map;
+package top.kylewang.service;
 
 import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.runtime.ProcessInstance;
+import top.kylewang.po.LeaveApply;
 
-import po.LeaveApply;
+import java.util.List;
+import java.util.Map;
 
 public interface LeaveService {
 	public ProcessInstance startWorkflow(LeaveApply apply,String userid,Map<String,Object> variables);
 	public List<LeaveApply> getpagedepttask(String userid,int firstrow,int rowcount);
 	public int getalldepttask(String userid);
 	public LeaveApply getleave(int id);
-	public List<LeaveApply> getpagehrtask(String userid,int firstrow,int rowcount);
+	public List<LeaveApply> getpagehrtask(String userid, int firstrow, int rowcount);
 	public int getallhrtask(String userid);
 	public List<LeaveApply> getpageXJtask(String userid,int firstrow,int rowcount);
 	public int getallXJtask(String userid);

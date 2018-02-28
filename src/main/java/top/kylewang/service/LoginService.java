@@ -1,4 +1,4 @@
-package service;
+package top.kylewang.service;
 
 
 public interface LoginService {

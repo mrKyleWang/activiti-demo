@@ -1,8 +1,8 @@
-package mapper;
+package top.kylewang.mapper;
 
 import java.util.List;
 
-import po.User;
+import top.kylewang.po.User;
 
 public interface UserMapper {
 	List<User> getusers();

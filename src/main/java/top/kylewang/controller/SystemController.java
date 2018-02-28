@@ -1,4 +1,4 @@
-package controller;
+package top.kylewang.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import pagemodel.DataGrid;
-import pagemodel.Userinfo;
-import po.Permission;
-import po.Role;
-import po.User;
-import po.User_role;
-import service.SystemService;
+import top.kylewang.pagemodel.DataGrid;
+import top.kylewang.pagemodel.Userinfo;
+import top.kylewang.po.Permission;
+import top.kylewang.po.Role;
+import top.kylewang.po.User;
+import top.kylewang.po.User_role;
+import top.kylewang.service.SystemService;
 
 @Controller
 public class SystemController {

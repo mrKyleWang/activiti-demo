@@ -1,6 +1,6 @@
-package mapper;
+package top.kylewang.mapper;
 
-import po.LeaveApply;
+import top.kylewang.po.LeaveApply;
 
 public interface LeaveApplyMapper {
 	void save(LeaveApply apply);

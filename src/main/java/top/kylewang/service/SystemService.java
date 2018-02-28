@@ -1,10 +1,10 @@
-package service;
+package top.kylewang.service;
+
+import top.kylewang.po.Permission;
+import top.kylewang.po.Role;
+import top.kylewang.po.User;
 
 import java.util.List;
-
-import po.Permission;
-import po.Role;
-import po.User;
 
 public interface SystemService {
 	List<User> getallusers();

@@ -1,4 +1,4 @@
-package po;
+package top.kylewang.po;
 
 public class Role_permission {
 	int rpid;

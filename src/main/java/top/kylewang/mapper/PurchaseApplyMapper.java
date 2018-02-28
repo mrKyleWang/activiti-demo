@@ -1,6 +1,6 @@
-package mapper;
+package top.kylewang.mapper;
 
-import po.PurchaseApply;
+import top.kylewang.po.PurchaseApply;
 
 public interface PurchaseApplyMapper {
 	void save(PurchaseApply apply);

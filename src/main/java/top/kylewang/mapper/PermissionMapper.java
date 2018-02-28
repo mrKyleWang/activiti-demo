@@ -1,8 +1,8 @@
-package mapper;
+package top.kylewang.mapper;
 
 import java.util.List;
 
-import po.Permission;
+import top.kylewang.po.Permission;
 
 public interface PermissionMapper {
 	List<Permission> getPermissions();
