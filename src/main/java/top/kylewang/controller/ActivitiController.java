@@ -2,7 +2,6 @@ package top.kylewang.controller;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,17 +39,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import top.kylewang.pagemodel.DataGrid;
-import top.kylewang.pagemodel.HistoryProcess;
-import top.kylewang.pagemodel.LeaveTask;
-import top.kylewang.pagemodel.Process;
-import top.kylewang.pagemodel.RunningProcess;
-import top.kylewang.po.LeaveApply;
-import top.kylewang.po.Permission;
-import top.kylewang.po.Role;
-import top.kylewang.po.Role_permission;
-import top.kylewang.po.User;
-import top.kylewang.po.User_role;
+import top.kylewang.VO.DataGrid;
+import top.kylewang.VO.HistoryProcess;
+import top.kylewang.VO.LeaveTask;
+import top.kylewang.VO.Process;
+import top.kylewang.VO.RunningProcess;
+import top.kylewang.pojo.LeaveApply;
+import top.kylewang.pojo.Permission;
+import top.kylewang.pojo.Role;
+import top.kylewang.pojo.Role_permission;
+import top.kylewang.pojo.User;
+import top.kylewang.pojo.User_role;
 import top.kylewang.service.LeaveService;
 import top.kylewang.service.SystemService;
 
@@ -65,11 +64,11 @@ public class ActivitiController {
 	@Autowired
 	FormService formservice;
 	@Autowired
-	IdentityService identityservice;
+	IdentityService identityService;
 	@Autowired
 	LeaveService leaveservice;
 	@Autowired
-	TaskService taskservice;
+	TaskService taskService;
 	@Autowired
 	HistoryService histiryservice;
 	@Autowired
@@ -373,7 +372,7 @@ public class ActivitiController {
 	@RequestMapping(value="/dealtask")
 	@ResponseBody
 	public String taskdeal(@RequestParam("taskid") String taskid,HttpServletResponse response){
-		Task task=taskservice.createTaskQuery().taskId(taskid).singleResult();
+		Task task=taskService.createTaskQuery().taskId(taskid).singleResult();
 		ProcessInstance process=runservice.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
 		LeaveApply leave=leaveservice.getleave(new Integer(process.getBusinessKey()));
 		return JSON.toJSONString(leave);
@@ -391,8 +390,8 @@ public class ActivitiController {
 		Map<String,Object> variables=new HashMap<String,Object>();
 		String approve=req.getParameter("deptleaderapprove");
 		variables.put("deptleaderapprove", approve);
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return JSON.toJSONString("success");
 	}
 	
@@ -403,8 +402,8 @@ public class ActivitiController {
 		Map<String,Object> variables=new HashMap<String,Object>();
 		String approve=req.getParameter("hrapprove");
 		variables.put("hrapprove", approve);
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return JSON.toJSONString("success");
 	}
 	

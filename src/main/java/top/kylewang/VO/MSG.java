@@ -1,4 +1,4 @@
-package top.kylewang.pagemodel;
+package top.kylewang.VO;
 
 public class MSG {
 	String state;

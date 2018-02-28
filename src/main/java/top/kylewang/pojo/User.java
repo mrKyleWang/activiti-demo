@@ -1,4 +1,6 @@
-package top.kylewang.po;
+package top.kylewang.pojo;
+
+import top.kylewang.pojo.User_role;
 
 import java.util.List;
 

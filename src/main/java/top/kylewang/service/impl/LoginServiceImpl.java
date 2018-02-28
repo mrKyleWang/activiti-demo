@@ -9,19 +9,28 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import top.kylewang.po.User;
+import top.kylewang.pojo.User;
 import top.kylewang.service.LoginService;
-@Transactional(propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,timeout=5)
+
+/**
+ * @author Kyle.Wang
+ * 2018-02-28 10:58
+ */
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 5)
 @Service
-public class LoginServiceImpl implements LoginService{
-	@Autowired
-	LoginMapper loginmapper;
-	public String getpwdbyname(String name) {
-		User s=loginmapper.getpwdbyname(name);
-		if(s!=null)
-		return s.getPassword();
-		else
-		return null;
-	}
+public class LoginServiceImpl implements LoginService {
+
+    @Autowired
+    LoginMapper loginMapper;
+
+    @Override
+    public String getpwdbyname(String name) {
+        User s = loginMapper.getpwdbyname(name);
+        if (s != null) {
+            return s.getPassword();
+        } else {
+            return null;
+        }
+    }
 
 }

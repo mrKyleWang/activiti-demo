@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import top.kylewang.pagemodel.*;
-import top.kylewang.po.PurchaseApply;
-import top.kylewang.po.Role;
-import top.kylewang.po.User;
-import top.kylewang.po.User_role;
+import top.kylewang.VO.*;
+import top.kylewang.pojo.PurchaseApply;
+import top.kylewang.pojo.Role;
+import top.kylewang.pojo.User;
+import top.kylewang.pojo.User_role;
 import top.kylewang.service.PurchaseService;
 import top.kylewang.service.SystemService;
 
@@ -36,7 +36,7 @@ public class PurchaseController {
 	@Autowired
 	RuntimeService runservice;
 	@Autowired
-	TaskService taskservice;
+	TaskService taskService;
 	@Autowired
 	HistoryService histiryservice;
 	@Autowired
@@ -117,7 +117,7 @@ public class PurchaseController {
 				String sonactiveid=runservice.createExecutionQuery().parentId(father).singleResult().getActivityId();//子流程的活动节点
 				String sonexeid=runservice.createExecutionQuery().parentId(father).singleResult().getId();
 				process.setActivityid(sonactiveid);
-				//System.out.println(taskservice.createTaskQuery().executionId(sonexeid).singleResult().getName());
+				//System.out.println(taskService.createTaskQuery().executionId(sonexeid).singleResult().getName());
 			}else{
 				process.setActivityid(p.getActivityId());
 			}
@@ -169,8 +169,8 @@ public class PurchaseController {
 		if(flag){//有权限
 			int firstrow=(current-1)*rowCount;
 			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("采购经理").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("采购经理").count();
+			List<Task> tasks=taskService.createTaskQuery().taskCandidateGroup("采购经理").listPage(firstrow, rowCount);
+			long totaltask=taskService.createTaskQuery().taskCandidateGroup("采购经理").count();
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
@@ -203,8 +203,8 @@ public class PurchaseController {
 		String userid=(String) session.getAttribute("username");
 		Map<String,Object> variables=new HashMap<String,Object>();
 		variables.put("purchaseauditi", purchaseauditi);
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return new MSG("ok");
 	}
 	
@@ -213,7 +213,7 @@ public class PurchaseController {
 	public DataGrid<PurchaseTask> updateapply(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
 		int firstrow=(current-1)*rowCount;
 		String userid=(String) session.getAttribute("username");
-		TaskQuery query=taskservice.createTaskQuery().processDefinitionKey("purchase").taskCandidateOrAssigned(userid).taskDefinitionKey("updateapply");
+		TaskQuery query=taskService.createTaskQuery().processDefinitionKey("purchase").taskCandidateOrAssigned(userid).taskDefinitionKey("updateapply");
 		long total=query.count();
 		List<Task> list=query.listPage(firstrow, rowCount);
 		List<PurchaseTask> plist=new ArrayList<PurchaseTask>();
@@ -250,7 +250,7 @@ public class PurchaseController {
 		if(updateapply.equals("true")){
 			String itemlist=req.getParameter("itemlist");
 			String total=req.getParameter("total");
-			Task task=taskservice.createTaskQuery().taskId(taskid).singleResult();
+			Task task=taskService.createTaskQuery().taskId(taskid).singleResult();
 			String instanceid=task.getProcessInstanceId();
 			ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 			String businesskey=ins.getBusinessKey();
@@ -261,8 +261,8 @@ public class PurchaseController {
 		}
 		Map<String,Object> variables=new HashMap<String,Object>();
 		variables.put("updateapply", Boolean.parseBoolean(updateapply));
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return new MSG("ok");
 	}
 	
@@ -318,8 +318,8 @@ public class PurchaseController {
 		if(flag){//有权限
 			int firstrow=(current-1)*rowCount;
 			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("财务管理员").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("财务管理员").count();
+			List<Task> tasks=taskService.createTaskQuery().taskCandidateGroup("财务管理员").listPage(firstrow, rowCount);
+			long totaltask=taskService.createTaskQuery().taskCandidateGroup("财务管理员").count();
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
@@ -354,8 +354,8 @@ public class PurchaseController {
 		variables.put("finance", finance);
 		if(finance.equals("true"))
 			variables.put("money", total);
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return new MSG("ok");
 	}
 	
@@ -385,8 +385,8 @@ public class PurchaseController {
 		if(flag){//有权限
 			int firstrow=(current-1)*rowCount;
 			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("总经理").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("总经理").count();
+			List<Task> tasks=taskService.createTaskQuery().taskCandidateGroup("总经理").listPage(firstrow, rowCount);
+			long totaltask=taskService.createTaskQuery().taskCandidateGroup("总经理").count();
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
@@ -419,8 +419,8 @@ public class PurchaseController {
 		String userid=(String) session.getAttribute("username");
 		Map<String,Object> variables=new HashMap<String,Object>();
 		variables.put("manager", manager);
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid, variables);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid, variables);
 		return new MSG("ok");
 	}
 	
@@ -450,8 +450,8 @@ public class PurchaseController {
 		if(flag){//有权限
 			int firstrow=(current-1)*rowCount;
 			List<PurchaseTask> results=new ArrayList<PurchaseTask>();
-			List<Task> tasks=taskservice.createTaskQuery().taskCandidateGroup("出纳员").listPage(firstrow, rowCount);
-			long totaltask=taskservice.createTaskQuery().taskCandidateGroup("出纳员").count();
+			List<Task> tasks=taskService.createTaskQuery().taskCandidateGroup("出纳员").listPage(firstrow, rowCount);
+			long totaltask=taskService.createTaskQuery().taskCandidateGroup("出纳员").count();
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
@@ -481,8 +481,8 @@ public class PurchaseController {
 	@ResponseBody
 	public MSG paycomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
 		String userid=(String) session.getAttribute("username");
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid);
 		return new MSG("ok");
 	}
 	
@@ -492,7 +492,7 @@ public class PurchaseController {
 	DataGrid<PurchaseTask> receivetasklist(HttpSession session,@RequestParam("current") int current,@RequestParam("rowCount") int rowCount){
 		int firstrow=(current-1)*rowCount;
 		String userid=(String) session.getAttribute("username");
-		TaskQuery query=taskservice.createTaskQuery().processDefinitionKey("purchase").taskCandidateOrAssigned(userid).taskDefinitionKey("receiveitem");
+		TaskQuery query=taskService.createTaskQuery().processDefinitionKey("purchase").taskCandidateOrAssigned(userid).taskDefinitionKey("receiveitem");
 		long total=query.count();
 		List<Task> tasks=query.listPage(firstrow, rowCount);
 		List<PurchaseTask> results=new ArrayList<PurchaseTask>();
@@ -525,8 +525,8 @@ public class PurchaseController {
 	@ResponseBody
 	public MSG receivecomplete(HttpSession session,@PathVariable("taskid") String taskid,HttpServletRequest req){
 		String userid=(String) session.getAttribute("username");
-		taskservice.claim(taskid, userid);
-		taskservice.complete(taskid);
+		taskService.claim(taskid, userid);
+		taskService.complete(taskid);
 		return new MSG("ok");
 	}
 }

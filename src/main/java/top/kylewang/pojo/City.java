@@ -1,5 +1,7 @@
-package top.kylewang.po;
+package top.kylewang.pojo;
 
+
+import top.kylewang.pojo.Country;
 
 public class City {
 	private short city_id;

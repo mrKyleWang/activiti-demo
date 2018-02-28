@@ -1,4 +1,4 @@
-package top.kylewang.po;
+package top.kylewang.pojo;
 
 import java.util.Date;
 

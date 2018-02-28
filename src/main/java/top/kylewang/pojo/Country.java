@@ -1,4 +1,4 @@
-package top.kylewang.po;
+package top.kylewang.pojo;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ public class Country {
 	private short country_id;
 	private String country;
 	private String last_update;
-	private List<City> citys;
+	private List<top.kylewang.pojo.City> citys;
 	public short getCountry_id() {
 		return country_id;
 	}
@@ -26,10 +26,10 @@ public class Country {
 	public void setLast_update(String last_update) {
 		this.last_update = last_update;
 	}
-	public List<City> getCitys() {
+	public List<top.kylewang.pojo.City> getCitys() {
 		return citys;
 	}
-	public void setCitys(List<City> citys) {
+	public void setCitys(List<top.kylewang.pojo.City> citys) {
 		this.citys = citys;
 	}
 	

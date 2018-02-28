@@ -1,12 +1,13 @@
-package top.kylewang.pagemodel;
+package top.kylewang.VO;
 
 import java.util.List;
+import top.kylewang.pojo.City;
 
-public class DataGrid<T> {
+public class CityGrid {
 	private int current;//当前页面号
 	private int rowCount;//每页行数
 	private int total;//总行数
-	private List<T> rows;
+	private List<City> rows;
 	public int getCurrent() {
 		return current;
 	}
@@ -25,10 +26,10 @@ public class DataGrid<T> {
 	public void setTotal(int total) {
 		this.total = total;
 	}
-	public List<T> getRows() {
+	public List<City> getRows() {
 		return rows;
 	}
-	public void setRows(List<T> rows) {
+	public void setRows(List<City> rows) {
 		this.rows = rows;
 	}
 	

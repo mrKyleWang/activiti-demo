@@ -1,8 +1,8 @@
-package top.kylewang.pagemodel;
+package top.kylewang.VO;
 
 
-import top.kylewang.po.LeaveApply;
-import top.kylewang.po.PurchaseApply;
+import top.kylewang.pojo.LeaveApply;
+import top.kylewang.pojo.PurchaseApply;
 
 public class HistoryProcess {
 	String processDefinitionId;

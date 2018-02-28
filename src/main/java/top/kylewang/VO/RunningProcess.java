@@ -1,4 +1,4 @@
-package top.kylewang.pagemodel;
+package top.kylewang.VO;
 //正在运行的流程
 public class RunningProcess {
 	String executionid;

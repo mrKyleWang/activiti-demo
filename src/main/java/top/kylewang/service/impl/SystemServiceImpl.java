@@ -1,144 +1,179 @@
 package top.kylewang.service.impl;
 
-import java.util.List;
-
-import top.kylewang.mapper.PermissionMapper;
-import top.kylewang.mapper.RoleMapper;
-import top.kylewang.mapper.UserMapper;
-
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import top.kylewang.po.Permission;
-import top.kylewang.po.Role;
-import top.kylewang.po.Role_permission;
-import top.kylewang.po.User;
-import top.kylewang.po.User_role;
+import top.kylewang.mapper.PermissionMapper;
+import top.kylewang.mapper.RoleMapper;
+import top.kylewang.mapper.UserMapper;
+import top.kylewang.pojo.*;
 import top.kylewang.service.SystemService;
 
-import com.github.pagehelper.PageHelper;
+import java.util.List;
+
+/**
+ * @author Kyle.Wang
+ * 2018-02-28 11:22
+ */
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, timeout = 5)
 @Service
-@Transactional(propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,timeout=5)
-public class SystemServiceImpl implements SystemService{
-	@Autowired
-	UserMapper usermapper;
-	@Autowired
-	RoleMapper rolemapper;
-	@Autowired
-	PermissionMapper permissionmapper;
-	public List<User> getallusers() {
-		return usermapper.getusers();
-	}
-	public List<User> getpageusers(int pagenum, int pagesize) {
-		PageHelper.startPage(pagenum,pagesize);  
-		List<User> l=usermapper.getusers();
-		return l;
-	}
-	public User getUserByid(int id) {
-		User u=usermapper.getUserByid(id);
-		return u;
-	}
-	public List<Role> getRoles() {
-		return rolemapper.getRoles();
-	}
-	public void deleteuser(int uid) {
-		usermapper.deleteuser(uid);
-		usermapper.deleteuserrole(uid);
-	}
-	public void adduser(User user, String[] rolenames) {
-		usermapper.adduser(user);
-		for(String rolename:rolenames){
-			Role role=rolemapper.getRoleidbyName(rolename);
-			User_role ur=new User_role();
-			ur.setRole(role);
-			ur.setUser(user);
-			rolemapper.adduserrole(ur);
-		}
-	}
-	public void adduser(User user) {
-		usermapper.adduser(user);
-	}
-	public void updateuser(int uid,User user, String[] rolenames) {
-		if(rolenames==null){
-			user.setUid(uid);
-			usermapper.updateuser(user);
-			usermapper.deleteuserrole(uid);
-		}
-		else{
-			user.setUid(uid);
-			usermapper.updateuser(user);
-			usermapper.deleteuserrole(uid);
-			for(String rolename:rolenames){
-				Role role=rolemapper.getRoleidbyName(rolename);
-				User_role ur=new User_role();
-				ur.setRole(role);
-				ur.setUser(user);
-				rolemapper.adduserrole(ur);
-			}
-		}
-		
-	}
-	public List<Role> getpageRoleinfo(int pagenum, int pagesize) {
-		PageHelper.startPage(pagenum,pagesize);  
-		List<Role> l=rolemapper.getRoleinfo();
-		return l;
-	}
-	public List<Role> getRoleinfo() {
-		return rolemapper.getRoleinfo();
-	}
-	public List<Permission> getPermisions() {
-		return permissionmapper.getPermissions();
-	}
-	public void addrole(Role role, String[] permissionnames) {
-		rolemapper.addRole(role);
-		for(String permissionname:permissionnames){
-			Permission p=permissionmapper.getPermissionByname(permissionname);
-			Role_permission rp=new Role_permission();
-			rp.setRole(role);
-			rp.setPermission(p);
-			rolemapper.addRolePermission(rp);
-		}
-	}
-	public void deleterole(int rid) {
-		rolemapper.deleterole(rid);
-		rolemapper.deleterole_permission(rid);
-		rolemapper.deleteuser_role(rid);
-	}
-	public Role getRolebyid(int rid) {
-		return rolemapper.getRolebyid(rid);
-	}
-	public void deleterolepermission(int rid) {
-		rolemapper.deleterole_permission(rid);
-	}
-	public void updaterole(int rid, String[] permissionnames) {
-		Role role=rolemapper.getRolebyid(rid);
-		for(String permissionname:permissionnames){
-			Permission p=permissionmapper.getPermissionByname(permissionname);
-			Role_permission rp=new Role_permission();
-			rp.setRole(role);
-			rp.setPermission(p);
-			rolemapper.addRolePermission(rp);
-		}
-	}
-	public List<Permission> getPagePermisions(int pagenum, int pagesize) {
-		PageHelper.startPage(pagenum,pagesize);  
-		return permissionmapper.getPermissions();
-	}
-	public void addPermission(String permissionname) {
-		permissionmapper.addpermission(permissionname);
-	}
-	public void deletepermission(int pid) {
-		permissionmapper.deletepermission(pid);
-		permissionmapper.deleteRole_permission(pid);
-	}
-	public int getUidByusername(String username) {
-		
-		return usermapper.getUidByusername(username);
-	}
-	
-	
+public class SystemServiceImpl implements SystemService {
+    @Autowired
+    UserMapper userMapper;
+    @Autowired
+    RoleMapper roleMapper;
+    @Autowired
+    PermissionMapper permissionMapper;
+
+    @Override
+    public List<User> getallusers() {
+        return userMapper.getusers();
+    }
+
+    @Override
+    public List<User> getpageusers(int pagenum, int pagesize) {
+        PageHelper.startPage(pagenum, pagesize);
+        List<User> l = userMapper.getusers();
+        return l;
+    }
+
+    @Override
+    public User getUserByid(int id) {
+        User u = userMapper.getUserByid(id);
+        return u;
+    }
+
+    @Override
+    public List<Role> getRoles() {
+        return roleMapper.getRoles();
+    }
+
+    @Override
+    public void deleteuser(int uid) {
+        userMapper.deleteuser(uid);
+        userMapper.deleteuserrole(uid);
+    }
+
+    @Override
+    public void adduser(User user, String[] rolenames) {
+        userMapper.adduser(user);
+        for (String rolename : rolenames) {
+            Role role = roleMapper.getRoleidbyName(rolename);
+            User_role ur = new User_role();
+            ur.setRole(role);
+            ur.setUser(user);
+            roleMapper.adduserrole(ur);
+        }
+    }
+
+    @Override
+    public void adduser(User user) {
+        userMapper.adduser(user);
+    }
+
+    @Override
+    public void updateuser(int uid, User user, String[] rolenames) {
+        if (rolenames == null) {
+            user.setUid(uid);
+            userMapper.updateuser(user);
+            userMapper.deleteuserrole(uid);
+        } else {
+            user.setUid(uid);
+            userMapper.updateuser(user);
+            userMapper.deleteuserrole(uid);
+            for (String rolename : rolenames) {
+                Role role = roleMapper.getRoleidbyName(rolename);
+                User_role ur = new User_role();
+                ur.setRole(role);
+                ur.setUser(user);
+                roleMapper.adduserrole(ur);
+            }
+        }
+
+    }
+
+    @Override
+    public List<Role> getpageRoleinfo(int pagenum, int pagesize) {
+        PageHelper.startPage(pagenum, pagesize);
+        List<Role> l = roleMapper.getRoleinfo();
+        return l;
+    }
+
+    @Override
+    public List<Role> getRoleinfo() {
+        return roleMapper.getRoleinfo();
+    }
+
+    @Override
+    public List<Permission> getPermisions() {
+        return permissionMapper.getPermissions();
+    }
+
+    @Override
+    public void addrole(Role role, String[] permissionnames) {
+        roleMapper.addRole(role);
+        for (String permissionname : permissionnames) {
+            Permission p = permissionMapper.getPermissionByname(permissionname);
+            Role_permission rp = new Role_permission();
+            rp.setRole(role);
+            rp.setPermission(p);
+            roleMapper.addRolePermission(rp);
+        }
+    }
+
+    @Override
+    public void deleterole(int rid) {
+        roleMapper.deleterole(rid);
+        roleMapper.deleterole_permission(rid);
+        roleMapper.deleteuser_role(rid);
+    }
+
+    @Override
+    public Role getRolebyid(int rid) {
+        return roleMapper.getRolebyid(rid);
+    }
+
+    @Override
+    public void deleterolepermission(int rid) {
+        roleMapper.deleterole_permission(rid);
+    }
+
+    @Override
+    public void updaterole(int rid, String[] permissionnames) {
+        Role role = roleMapper.getRolebyid(rid);
+        for (String permissionname : permissionnames) {
+            Permission p = permissionMapper.getPermissionByname(permissionname);
+            Role_permission rp = new Role_permission();
+            rp.setRole(role);
+            rp.setPermission(p);
+            roleMapper.addRolePermission(rp);
+        }
+    }
+
+    @Override
+    public List<Permission> getPagePermisions(int pagenum, int pagesize) {
+        PageHelper.startPage(pagenum, pagesize);
+        return permissionMapper.getPermissions();
+    }
+
+    @Override
+    public void addPermission(String permissionname) {
+        permissionMapper.addpermission(permissionname);
+    }
+
+    @Override
+    public void deletepermission(int pid) {
+        permissionMapper.deletepermission(pid);
+        permissionMapper.deleteRole_permission(pid);
+    }
+
+    @Override
+    public int getUidByusername(String username) {
+        return userMapper.getUidByusername(username);
+    }
+
 
 }

@@ -16,3 +16,8 @@ spring:
     show-sql: true
   freemarker:
     suffix: .html
+
+#mybaits配置
+mybatis:
+  type-aliases-package: top.kylewang.pojo
+  mapper-locations: classpath:mappers/*.xml

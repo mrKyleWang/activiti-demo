@@ -1,4 +1,4 @@
-package top.kylewang.pagemodel;
+package top.kylewang.VO;
 
 import java.util.Date;
 

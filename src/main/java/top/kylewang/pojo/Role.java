@@ -1,11 +1,11 @@
-package top.kylewang.po;
+package top.kylewang.pojo;
 
 import java.util.List;
 
 public class Role {
 	int rid;
 	String rolename;
-	List<User_role> user_roles;  
+	List<User_role> user_roles;
 	List<Role_permission> role_permissions;
 	public int getRid() {
 		return rid;
