@@ -1,5 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-     <!--Start Breadcrumb-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>pay</title>
+</head>
+<!--Start Breadcrumb-->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
 	<a href="#" class="show-sidebar">
@@ -9,7 +14,7 @@
 			<li><a href="index">首页</a></li>
 			<li><a href="#">我的待办任务</a></li>
 			<li><a href="#">采购待办</a></li>
-			<li><a href="#">采购经理审批</a></li>
+			<li><a href="#">出纳付款</a></li>
 		</ol>
 	</div>
 </div>       
@@ -19,7 +24,7 @@
                     <div class="box ui-draggable ui-droppable">
 				<div class="box-header">
 					<div class="box-name">
-						<i class="fa fa-coffee"></i> <span>采购经理审批</span>
+						<i class="fa fa-coffee"></i> <span>出纳付款</span>
 					</div>
 					<div class="box-icons">
 						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -53,7 +58,7 @@
 			<div class="box ui-draggable ui-droppable" id="dept">
 				<div class="box-header">
 					<div class="box-name">
-						<i class="fa fa-search"></i> <span>采购经理审批</span>
+						<i class="fa fa-search"></i> <span>出纳付款</span>
 					</div>
 					<div class="box-icons">
 						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -73,16 +78,7 @@
 						<div class="form-group has-feedback">
 							<label>总金额(元)</label> <input readonly="readonly" id="total" class="form-control" name="total" placeholder="总金额">
 						</div>
-						<div class="form-group">
-						                <label>审批意见</label>
-						                <div class="controls">
-											<select name="purchaseauditi">
-												<option value="true">同意</option>
-												<option value="false">拒绝</option>
-											</select>
-										</div>
-						             </div> 
-						<button id="btn" type="button" class="btn btn-primary">完成</button>
+						<button id="btn" type="button" class="btn btn-primary">确认付款</button>
 					</form>
 				</div>
 			</div>
@@ -102,10 +98,10 @@
 	    	navigation:2,
   			columnSelection:false,
 		    ajax:true,
-		    url:"puchasemanagertasklist",
+		    url:"paytasklist",
 		    formatters: {
-		    "applytime":function(column, row){
-		    	return getLocalTime(row.applytime);
+		    "taskcreatetime":function(column, row){
+		    	return getLocalTime(row.taskcreatetime);
 		    },
 		    "commands": function(column, row)
 		    {
@@ -117,6 +113,7 @@
 	    		{
 	    	    grid.find(".command-run1").on("click", function(e)
 	    	    {
+	    	    	var taskid=$(this).data("row-id");
 	    	    	var total=$(this).data("total");
 	    	    	var itemlist=$(this).data("itemlist");
 	    	    	var taskid=$(this).data("row-id");
@@ -124,9 +121,9 @@
 	    	    	$("#itemlist").val(itemlist);
 	    	    	$("#dept").show();
 	    	    	$("#btn").click(function(){
-	    		    	$.post("task/purchasemanagercomplete/"+taskid,$("form").serialize(),function(a){
+	    		    	$.post("task/paycomplete/"+taskid,$("form").serialize(),function(a){
 	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("purchasemanager");
+	    		    		LoadAjaxContent("pay");
 	    		    	});
 	    	    	
 	    	    });

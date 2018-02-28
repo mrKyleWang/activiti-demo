@@ -1,5 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-     <!--Start Breadcrumb-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>hr audit</title>
+</head>
+<!--Start Breadcrumb-->
 <div class="row">
 	<div id="breadcrumb" class="col-xs-12">
 	<a href="#" class="show-sidebar">
@@ -9,17 +14,17 @@
 			<li><a href="index">首页</a></li>
 			<li><a href="#">我的待办任务</a></li>
 			<li><a href="#">请假待办</a></li>
-			<li><a href="#">部门领导审批</a></li>
+			<li><a href="#">人事审批</a></li>
 		</ol>
 	</div>
 </div>       
             <div class="container-fluid">
                        <div class="row">
                     <div class="col-lg-12">
-                    <div class="box ui-draggable ui-droppable">
+                        <div class="box ui-draggable ui-droppable">
 				<div class="box-header">
 					<div class="box-name">
-						<i class="fa fa-coffee"></i> <span>部门领导审批</span>
+						<i class="fa fa-coffee"></i> <span>人事审批</span>
 					</div>
 					<div class="box-icons">
 						<a class="collapse-link"> <i class="fa fa-chevron-up"></i>
@@ -47,9 +52,9 @@
 							        </thead>
 							    </table>
                             </div>
-                            </div>
                         </div>
                     </div>
+                </div>
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="box ui-draggable ui-droppable" id="dept">
@@ -92,9 +97,9 @@
 						                 <input class="form-control" id="reason" readonly="readonly">
 						             </div>    
 						             <div class="form-group">
-						                <label>审批意见</label>
+						                <label>hr审批意见</label>
 						                <div class="controls">
-											<select name="deptleaderapprove">
+											<select name="hrapprove">
 												<option value="true">同意</option>
 												<option value="false">拒绝</option>
 											</select>
@@ -120,7 +125,7 @@
 	    	navigation:2,
   			columnSelection:false,
 		    ajax:true,
-		    url:"depttasklist",
+		    url:"hrtasklist",
 		    formatters: {
 		    "taskcreatetime":function(column, row){
 		    	return getLocalTime(row.taskcreatetime);
@@ -143,13 +148,13 @@
 	    	    		$("#startime").val(data.start_time);
 	    	    		$("#endtime").val(data.end_time);
 	    	    		$("#applytime").val(data.apply_time);
-	    	    		$("form").attr("action","task/deptcomplete/"+taskid);
+	    	    		$("form").attr("action","task/hrcomplete/"+taskid);
 	    	    	});
 	    	    	$("#dept").show();
 	    	    	$("#btn").click(function(){
-	    		    	$.post("task/deptcomplete/"+taskid,$("form").serialize(),function(a){
+	    		    	$.post("task/hrcomplete/"+taskid,$("form").serialize(),function(a){
 	    		    		alert("处理成功");
-	    		    		LoadAjaxContent("deptleaderaudit");
+	    		    		LoadAjaxContent("hraudit");
 	    		    	});
 	    	    	
 	    	    });
@@ -159,7 +164,7 @@
 	    });
 	  });
 	  
-function getLocalTime(nS) {  
+	  function getLocalTime(nS) {  
  return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/,' ');  
 }
     </script>
