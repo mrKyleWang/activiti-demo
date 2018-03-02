@@ -62,8 +62,8 @@
                                     </div>
                                     <i class="fa fa-angle-down pull-right"></i>
                                     <div class="user-mini pull-right">
-                                        <span class="welcome">Welcome,</span>
-                                        <span>${sessionScope.username}</span>
+                                        <span class="welcome">Welcome</span>
+                                        <span id="username"></span>
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu">
@@ -207,5 +207,15 @@
 <script src="js/jquery.bootgrid.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
 <script src="js/devoops.js"></script>
+<script>
+    $(function () {
+        // 通过ajax获取当前用户名
+        $.get("/showUser",function(data){
+            $("#username").html(data);
+        });
+    });
+
+
+</script>
 </body>
 </html>
