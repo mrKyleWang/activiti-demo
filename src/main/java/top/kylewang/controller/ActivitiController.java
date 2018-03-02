@@ -124,7 +124,12 @@ public class ActivitiController {
 	
 	@RequestMapping("/hraudit")
 	public String hr(){
-		return "activiti/hraudit"; 
+		return "activiti/hraudit";
+	}
+
+	@RequestMapping("/reportback")
+	public String report(){
+		return "activiti/reportback";
 	}
 	
 	@RequestMapping("/index")
