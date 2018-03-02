@@ -32,17 +32,17 @@ import java.util.*;
 @Controller
 public class PurchaseController {
 	@Autowired
-	RepositoryService repositoryservice;
+	RepositoryService repositoryService;
 	@Autowired
-	RuntimeService runservice;
+	RuntimeService runtimeService;
 	@Autowired
 	TaskService taskService;
 	@Autowired
-	HistoryService histiryservice;
+	HistoryService historyService;
 	@Autowired
-	SystemService systemservice;
+	SystemService systemService;
 	@Autowired
-	PurchaseService purchaseservice;
+	PurchaseService purchaseService;
 	
 	@RequestMapping("/purchase")
 	String purchase(){
@@ -95,7 +95,7 @@ public class PurchaseController {
 		purchase.setItemlist(itemlist);
 		purchase.setTotal(total);
 		purchase.setApplytime(new Date());
-		ProcessInstance ins=purchaseservice.startWorkflow(purchase, userid, variables);
+		ProcessInstance ins=purchaseService.startWorkflow(purchase, userid, variables);
 		System.out.println("流程id"+ins.getId()+"已启动");
 		return JSON.toJSONString("sucess");
 	}
@@ -105,7 +105,7 @@ public class PurchaseController {
 	public DataGrid<RunningProcess> mypurchaseprocess(HttpSession session, @RequestParam("current") int current, @RequestParam("rowCount") int rowCount){
 		int firstrow=(current-1)*rowCount;
 		String userid=(String) session.getAttribute("username");
-		ProcessInstanceQuery query = runservice.createProcessInstanceQuery();
+		ProcessInstanceQuery query = runtimeService.createProcessInstanceQuery();
 		int total= (int) query.count();
 		List<ProcessInstance> a = query.processDefinitionKey("purchase").involvedUser(userid).listPage(firstrow, rowCount);
 		List<RunningProcess> list=new ArrayList<RunningProcess>();
@@ -114,8 +114,8 @@ public class PurchaseController {
 			if(p.getActivityId()==null)
 			{//有子流程
 				String father=p.getProcessInstanceId();
-				String sonactiveid=runservice.createExecutionQuery().parentId(father).singleResult().getActivityId();//子流程的活动节点
-				String sonexeid=runservice.createExecutionQuery().parentId(father).singleResult().getId();
+				String sonactiveid=runtimeService.createExecutionQuery().parentId(father).singleResult().getActivityId();//子流程的活动节点
+				String sonexeid=runtimeService.createExecutionQuery().parentId(father).singleResult().getId();
 				process.setActivityid(sonactiveid);
 				//System.out.println(taskService.createTaskQuery().executionId(sonexeid).singleResult().getName());
 			}else{
@@ -124,7 +124,7 @@ public class PurchaseController {
 			process.setBusinesskey(p.getBusinessKey());
 			process.setExecutionid(p.getId());
 			process.setProcessInstanceid(p.getProcessInstanceId());
-			PurchaseApply l=purchaseservice.getPurchase(Integer.parseInt(p.getBusinessKey()));
+			PurchaseApply l=purchaseService.getPurchase(Integer.parseInt(p.getBusinessKey()));
 			if(l.getApplyer().equals(userid))
 			list.add(process);
 			else
@@ -153,8 +153,8 @@ public class PurchaseController {
 		grid.setRows(new ArrayList<PurchaseTask>());
 		//先做权限检查，对于没有采购经理角色的用户,直接返回空
 		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
+		int uid=systemService.getUidByusername(userid);
+		User user=systemService.getUserByid(uid);
 		List<User_role> userroles=user.getUser_roles();
 		if(userroles==null||userroles.size()==0)
 			return grid;
@@ -174,9 +174,9 @@ public class PurchaseController {
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+				ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+				PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 				vo.setApplyer(a.getApplyer());
 				vo.setApplytime(a.getApplytime());
 				vo.setBussinesskey(a.getId());
@@ -220,9 +220,9 @@ public class PurchaseController {
 		for(Task task:list){
 			PurchaseTask vo=new PurchaseTask();
 			String instanceid=task.getProcessInstanceId();
-			ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 			String businesskey=ins.getBusinessKey();
-			PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 			vo.setApplyer(a.getApplyer());
 			vo.setApplytime(a.getApplytime());
 			vo.setBussinesskey(a.getId());
@@ -252,12 +252,12 @@ public class PurchaseController {
 			String total=req.getParameter("total");
 			Task task=taskService.createTaskQuery().taskId(taskid).singleResult();
 			String instanceid=task.getProcessInstanceId();
-			ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+			ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 			String businesskey=ins.getBusinessKey();
-			PurchaseApply p=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+			PurchaseApply p=purchaseService.getPurchase(Integer.parseInt(businesskey));
 			p.setItemlist(itemlist);
 			p.setTotal(Float.parseFloat(total));
-			purchaseservice.updatePurchase(p);
+			purchaseService.updatePurchase(p);
 		}
 		Map<String,Object> variables=new HashMap<String,Object>();
 		variables.put("updateapply", Boolean.parseBoolean(updateapply));
@@ -270,7 +270,7 @@ public class PurchaseController {
 	@ResponseBody
 	public DataGrid<HistoryProcess> getHistory(HttpSession session, @RequestParam("current") int current, @RequestParam("rowCount") int rowCount){
 		String userid=(String) session.getAttribute("username");
-		HistoricProcessInstanceQuery process = histiryservice.createHistoricProcessInstanceQuery().processDefinitionKey("purchase").startedBy(userid).finished();
+		HistoricProcessInstanceQuery process = historyService.createHistoricProcessInstanceQuery().processDefinitionKey("purchase").startedBy(userid).finished();
 		int total= (int) process.count();
 		int firstrow=(current-1)*rowCount;
 		List<HistoricProcessInstance> info = process.listPage(firstrow, rowCount);
@@ -278,7 +278,7 @@ public class PurchaseController {
 		for(HistoricProcessInstance history:info){
 			HistoryProcess his=new HistoryProcess();
 			String bussinesskey=history.getBusinessKey();
-			PurchaseApply apply=purchaseservice.getPurchase(Integer.parseInt(bussinesskey));
+			PurchaseApply apply=purchaseService.getPurchase(Integer.parseInt(bussinesskey));
 			his.setPurchaseapply(apply);
 			his.setBusinessKey(bussinesskey);
 			his.setProcessDefinitionId(history.getProcessDefinitionId());
@@ -302,8 +302,8 @@ public class PurchaseController {
 		grid.setRows(new ArrayList<PurchaseTask>());
 		//先做权限检查，对于没有财务管理员角色的用户,直接返回空
 		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
+		int uid=systemService.getUidByusername(userid);
+		User user=systemService.getUserByid(uid);
 		List<User_role> userroles=user.getUser_roles();
 		if(userroles==null||userroles.size()==0)
 			return grid;
@@ -323,9 +323,9 @@ public class PurchaseController {
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+				ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+				PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 				vo.setApplyer(a.getApplyer());
 				vo.setApplytime(a.getApplytime());
 				vo.setBussinesskey(a.getId());
@@ -369,8 +369,8 @@ public class PurchaseController {
 		grid.setRows(new ArrayList<PurchaseTask>());
 		//先做权限检查，对于没有总经理角色的用户,直接返回空
 		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
+		int uid=systemService.getUidByusername(userid);
+		User user=systemService.getUserByid(uid);
 		List<User_role> userroles=user.getUser_roles();
 		if(userroles==null||userroles.size()==0)
 			return grid;
@@ -390,9 +390,9 @@ public class PurchaseController {
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+				ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+				PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 				vo.setApplyer(a.getApplyer());
 				vo.setApplytime(a.getApplytime());
 				vo.setBussinesskey(a.getId());
@@ -434,8 +434,8 @@ public class PurchaseController {
 		grid.setRows(new ArrayList<PurchaseTask>());
 		//先做权限检查，对于没有出纳角色的用户,直接返回空
 		String userid=(String) session.getAttribute("username");
-		int uid=systemservice.getUidByusername(userid);
-		User user=systemservice.getUserByid(uid);
+		int uid=systemService.getUidByusername(userid);
+		User user=systemService.getUserByid(uid);
 		List<User_role> userroles=user.getUser_roles();
 		if(userroles==null||userroles.size()==0)
 			return grid;
@@ -455,9 +455,9 @@ public class PurchaseController {
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+				ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+				PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 				vo.setApplyer(a.getApplyer());
 				vo.setApplytime(a.getApplytime());
 				vo.setBussinesskey(a.getId());
@@ -499,9 +499,9 @@ public class PurchaseController {
 			for(Task task:tasks){
 				PurchaseTask vo=new PurchaseTask();
 				String instanceid=task.getProcessInstanceId();
-				ProcessInstance ins=runservice.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
+				ProcessInstance ins=runtimeService.createProcessInstanceQuery().processInstanceId(instanceid).singleResult();
 				String businesskey=ins.getBusinessKey();
-				PurchaseApply a=purchaseservice.getPurchase(Integer.parseInt(businesskey));
+				PurchaseApply a=purchaseService.getPurchase(Integer.parseInt(businesskey));
 				vo.setApplyer(a.getApplyer());
 				vo.setApplytime(a.getApplytime());
 				vo.setBussinesskey(a.getId());

@@ -12,7 +12,7 @@ import java.util.Map;
  * @author Kyle.Wang
  * 2018-02-28 11:25
  */
-interface LeaveService {
+public interface LeaveService {
     ProcessInstance startWorkflow(LeaveApply apply, String userid, Map<String, Object> variables);
 
     List<LeaveApply> getpagedepttask(String userid, int firstrow, int rowcount);

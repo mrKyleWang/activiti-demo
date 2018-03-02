@@ -12,12 +12,12 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class Login {
     @Autowired
-    LoginService loginservice;
+    LoginService loginService;
 
     @RequestMapping("/loginvalidate")
     public String loginvalidate(@RequestParam("username") String username, @RequestParam("password") String pwd, HttpSession httpSession) {
         if (username == null) return "login";
-        String realpwd = loginservice.getpwdbyname(username);
+        String realpwd = loginService.getpwdbyname(username);
         if (realpwd != null && pwd.equals(realpwd)) {
             httpSession.setAttribute("username", username);
             return "index";

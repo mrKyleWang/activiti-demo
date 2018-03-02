@@ -13,7 +13,7 @@ import java.util.Properties;
  * 2018/2/20 0020 11:10
  */
 @SpringBootApplication
-@MapperScan("top.kylewang.mappers")
+@MapperScan("top.kylewang.mapper")
 public class ActivitiApplication {
     public static void main(String[] args) {
         SpringApplication.run(ActivitiApplication.class, args);
